@@ -1,11 +1,22 @@
-from typing import Any
+from typing import Any, List, Optional
 from fastapi import FastAPI, Body
 from fastapi.responses import ORJSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from logger import logger
 from config import settings
+from data import movies
+
+
+class Movie(BaseModel):
+    movieId: int
+    title: Optional[str]
+    genres: Optional[str]
+
+    class Config:
+        orm_mode = True
 
 
 app = FastAPI(
@@ -32,6 +43,11 @@ async def root():
     return ORJSONResponse(
         content={"detail": "Healthy!"}
     )
+
+
+@app.get("/movies", response_model=List[Movie])
+async def get_movies():
+    return movies[1:10].to_dict()
 
 
 if __name__ == "__main__":
