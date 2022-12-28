@@ -1,46 +1,15 @@
-from typing import Any, List, Optional
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import json
 
 from logger import logger
 from config import settings
-from data import movies, users
-from model_based import load_model, get_model_based_recommend
+from recommender.model_based import model_based_recommender
+from api import router
 
 
-class Movie(BaseModel):
-    movieId: int
-    title: Optional[str]
-    genres: Optional[str]
-    thumbnail: Optional[str]
-
-
-class User(BaseModel):
-    userId: int
-    gender: Optional[str]
-    age: Optional[int]
-    occupation: Optional[str]
-    zipcode: Optional[str]
-    age_desc: Optional[str]
-    occ_desc: Optional[str]
-
-
-class Recommend(BaseModel):
-    """
-    {"movieId":1250,"userId":8,"rating":4.629879,"title":"Bridge on the River Kwai, The (1957)","genres":"Adventure|Drama|War"}
-    """
-    movieId: int
-    userId: int
-    rating: float
-    title: Optional[str]
-    genres: Optional[str]
-
-
-model = load_model()
+model_based_recommender.load_model()
 app = FastAPI(
     title="Movie Recommender API",
     description="Development",
@@ -56,7 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
+app.include_router(router)
 
 @app.get("/")
 async def root():
@@ -65,52 +34,6 @@ async def root():
     return ORJSONResponse(
         content={"detail": "Healthy!"}
     )
-
-
-@app.get("/users")
-async def get_users(
-    skip: int = 0,
-    limit: int = 10
-):
-    user_arr= [
-        (
-            User(**row)
-        ) for index, row in users[skip:limit].iterrows()
-    ]  
-    return user_arr
-
-
-@app.get("/movies")
-async def get_movies(
-    skip: int = 0,
-    limit: int = 10
-):
-    movie_arr= [
-        (
-            Movie(**row)
-        ) for index, row in movies[skip:limit].iterrows()
-    ]  
-    return movie_arr
-
-
-@app.get(
-    "/recommend/{user_id}/model-based",
-    response_model=List[Recommend]
-)
-async def get_movies(
-    user_id: int
-):
-    # try:
-    result = await get_model_based_recommend(user_id, model)
-    recommend_arr = []
-    for obj_str in result.toJSON().collect():
-        recommend_arr.append(json.loads(obj_str))
-    return recommend_arr
-    # except Exception as e:
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail=str(e)
-    #     )
 
 
 if __name__ == "__main__":
