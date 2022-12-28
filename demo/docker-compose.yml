@@ -1,22 +1,7 @@
 version: "3.9"
 
 services:
-  postgres:
-    container_name: "postgres_db"
-    image: postgres:12
-    restart: always
-    env_file: ./server/.env
-    volumes:
-      - app-db-data:/var/lib/postgresql/data:cached
-    ports:
-    - "54322:5432"
-    healthcheck:
-      test: pg_isready -U postgres
-      interval: 3s
-      timeout: 2s
-      retries: 3
-
-  deligator:
+  server:
     container_name: "server"
     build: "./server"
     volumes:
@@ -25,9 +10,4 @@ services:
     ports:
       - "8000:8000"
     command: uvicorn --port 8000 --host 0.0.0.0 main:app --reload
-    depends_on:
-      postgres:
-        condition: service_healthy
 
-volumes:
-  app-db-data:
