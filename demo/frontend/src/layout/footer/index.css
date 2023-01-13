@@ -1,0 +1,34 @@
+.container-footer{
+    margin-top: 100px;
+    background-color: rgba(3, 37, 65, 1);
+    height: 400px;
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+}
+.name-web{
+    text-align: center;
+    width: 200px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+.title-collumn{
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.list-select{
+    display: flex;
+    flex-direction: column;
+}
+.list-select a {
+    padding-top: 10px;
+    color: white;
+    font-weight: 200;
+}
+.infor{
+    width: 200px;
+    margin-right: 40px;
+}

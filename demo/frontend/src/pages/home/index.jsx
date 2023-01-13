@@ -1,5 +1,7 @@
 import React from "react";
 import './index.css'
+import Card from "../../components/card.jsx"
+
 const Home = () => {
   return ( 
   <div className="container">
@@ -17,7 +19,37 @@ const Home = () => {
 
       <div className="popular-film">
         <div className="title-body">What's Popular</div>
-      </div>      
+        <div className="div-item">
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+        </div>
+      </div>    
+
+      <div className="banner">
+
+      </div>
+      
+      <div className="popular-film">
+        <div className="title-body">Trending</div>
+        <div className="div-item">
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+        </div>
+      </div>    
     </div>
   </div>
 
