@@ -55,3 +55,11 @@
     color: white;
     cursor: pointer;
 }
+.popular-film{
+    margin-top: 20px;
+    padding-left: 30px;
+}
+.title-body{
+    font-size: 20px;
+    font-weight: 500;
+}

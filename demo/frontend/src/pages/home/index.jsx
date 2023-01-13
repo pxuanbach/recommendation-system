@@ -12,9 +12,12 @@ const Home = () => {
           <div className="btn-search">
             Search
           </div>
-
         </div>
       </div>
+
+      <div className="popular-film">
+        <div className="title-body">What's Popular</div>
+      </div>      
     </div>
   </div>
 
