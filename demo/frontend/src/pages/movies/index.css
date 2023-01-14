@@ -1,0 +1,36 @@
+.title-movies{
+    font-size: 25px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+.body-movies{
+    display: flex;
+    padding-top: 20px;
+}
+.div-left{
+    flex: 1;
+}
+.div-sort{
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    /* display: flex;
+    justify-content: center; */
+}
+.title-sort{
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #ccc;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+.div-filter{
+    padding: 20px;
+}
+.div-right{
+    flex: 4;
+}
