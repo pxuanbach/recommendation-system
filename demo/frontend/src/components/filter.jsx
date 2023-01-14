@@ -7,6 +7,7 @@ import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import TextDate from "./filter-date.jsx"
+import "./filter.css"
 
 export default function Filter() {
   return (
@@ -32,8 +33,26 @@ export default function Filter() {
         <FormControlLabel control={<Checkbox />} label="Ads" />
       </FormGroup>
       </div>
-      <div>
-        
+      <div style={{paddingTop: 20}}>
+        <FormLabel id="demo-radio-buttons-group-label">Release Dates</FormLabel>
+      </div>
+      <div style={{paddingTop: 20}}>
+        <FormLabel id="demo-radio-buttons-group-label">Genres</FormLabel>
+        <div className='div-genre'>
+          <div className='btn-genre'>Chương trình Truyền Hình</div>
+          <div className='btn-genre'>Phim Bí Ẩn</div>
+          <div className='btn-genre'>Phim Chiến Tranh</div>
+          <div className='btn-genre'>Phim Chính Kịch</div>
+          <div className='btn-genre'>Phim Gia Đình</div>
+          <div className='btn-genre'>Phim Lãng Mạn</div>
+          <div className='btn-genre'>Phim Gây Cấn</div>
+          <div className='btn-genre'>Phim Hoạt Hình</div>
+          <div className='btn-genre'>Phim Hài</div>
+          <div className='btn-genre'>Phim Hành Động</div>
+          <div className='btn-genre'>Phim Hình Sự</div>
+          <div className='btn-genre'>Phim Khoa Học Viễn Tưởng</div>
+          <div className='btn-genre'>Phim Kinh Dị</div>
+        </div>
       </div>
     </div>
   );
