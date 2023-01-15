@@ -6,10 +6,14 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
 import TextDate from "./filter-date.jsx"
 import "./filter.css"
 
 export default function Filter() {
+  const [value, setValue] = React.useState(2);
   return (
     <div>
       <FormControl>
@@ -53,6 +57,25 @@ export default function Filter() {
           <div className='btn-genre'>Phim Khoa Học Viễn Tưởng</div>
           <div className='btn-genre'>Phim Kinh Dị</div>
         </div>
+      </div>
+      <div style={{paddingTop: 20}}>
+        <FormLabel id="demo-radio-buttons-group-label">User Score</FormLabel>
+        
+        <Box
+        sx={{
+          '& > legend': { mt: 2 },marginTop: 1, display: 'flex', justifyContent: 'center'
+        }}
+      >
+        <Rating
+          size="large"
+          precision={0.5}
+          name="simple-controlled"
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        />
+      </Box>
       </div>
     </div>
   );
