@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css"
 import Sort from "../../components/sort.jsx"
 import Filter from "../../components/filter.jsx"
+import CardMovies from "../../components/cardMovies";
 
 const Movies = () => {
   return (
@@ -23,7 +24,22 @@ const Movies = () => {
           </div>
 
           <div className="div-right">
-
+            <div className="body-right">
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+              <CardMovies/>
+            </div>
           </div>
         </div>
       </div>

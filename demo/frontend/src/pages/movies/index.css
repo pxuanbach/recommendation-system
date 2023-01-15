@@ -35,3 +35,7 @@
 .div-right{
     flex: 4;
 }
+.body-right{
+    display: flex;
+    flex-wrap: wrap;
+}
