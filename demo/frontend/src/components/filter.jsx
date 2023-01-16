@@ -39,6 +39,9 @@ export default function Filter() {
       </div>
       <div style={{paddingTop: 20}}>
         <FormLabel id="demo-radio-buttons-group-label">Release Dates</FormLabel>
+        <div style={{paddingTop: 20, lineHeight:5}}>
+          <TextDate/>
+        </div>
       </div>
       <div style={{paddingTop: 20}}>
         <FormLabel id="demo-radio-buttons-group-label">Genres</FormLabel>
