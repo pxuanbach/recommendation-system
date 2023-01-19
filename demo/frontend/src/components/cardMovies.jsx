@@ -3,12 +3,12 @@ import "./cardMovies.css"
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-
+import { Link } from "react-router-dom";
 
 const CardMovies = () => {
     const [value, setValue] = React.useState(5);
     return (
-        <div className="container-card-movies">
+        <Link to={"/detail"} className="container-card-movies">
             <div className="image-card-movies">
             </div>
             <div className="detail-card-movies">
@@ -23,7 +23,7 @@ const CardMovies = () => {
                 </Box>
             </div>
             
-        </div>
+        </Link>
     )
 };
 

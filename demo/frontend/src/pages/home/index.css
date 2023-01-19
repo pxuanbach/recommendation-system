@@ -67,12 +67,13 @@
     cursor: pointer;
 }
 .popular-film{
-    margin-top: 25px;
+    /* margin-top: 25px; */
     padding-left: 20px;
 }
 .title-body{
     font-size: 20px;
     font-weight: 600;
+    padding-top: 25px;
 }
 .div-item{
     width: 99%;

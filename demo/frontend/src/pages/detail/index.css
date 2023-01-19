@@ -1,0 +1,50 @@
+.body{
+    display: flex;
+}
+.div-left-detail-movie{
+    flex: 4;
+}
+
+.div-right-detail-movie{
+    flex: 1;
+}
+.div-list-icon{
+    display: flex;
+    padding-top: 30px;
+}
+.list-icon-social {
+    width: fit-content;
+    border-right: 1px solid #ccc;
+}
+.list-icon-social > i{
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+.div-list-icon > i{
+    font-size: 1.3rem;
+    margin-left: 15px;
+}
+.div-spec-detail-movie{
+
+}
+.title-spec{
+    font-weight: 700;
+    padding-top: 20px;
+}
+.div-keyword{
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+}
+.keyword{
+    width: fit-content;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    background-color: rgb(213, 210, 210);
+    font-size: 14px;
+    margin: 3px;
+}
