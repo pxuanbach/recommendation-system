@@ -1,0 +1,26 @@
+.container-card-cast{
+    border: 1px solid #ccc;
+    width: 150px;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+.card-cast{
+    width: 150px;
+    display: flex;
+    justify-content: center;
+}
+.card-cast > img{
+    width: 99%;
+    border-radius: 8px 8px 0 0;
+}
+.div-detail-cast{
+    padding: 10px;
+}
+.name-cast{
+    font-weight: bold;
+    font-size: 15px;
+    width: 100px;
+}
+.position-cast{
+    font-size: 14px;
+}
