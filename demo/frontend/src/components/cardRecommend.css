@@ -1,0 +1,24 @@
+.container-card-recommend{
+    border: 1px solid #ccc;
+    width: 300px;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+.card-recommend{
+    width: 300px;
+}
+.card-recommend > img{
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+}
+.div-detail-recommend{
+    padding: 10px;
+}
+.name-movie-recommend{
+    font-weight: bold;
+    font-size: 15px;
+    width: 100px;
+}
+.date-movie-recommend{
+    font-size: 14px;
+}

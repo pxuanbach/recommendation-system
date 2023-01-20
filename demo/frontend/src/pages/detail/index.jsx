@@ -3,6 +3,8 @@ import "./index.css"
 import PosterDetail from "../../components/poster-detail";
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
+import CardCast from "../../components/cardCast";
+import CardRecommend from "../../components/cardRecommend";
 
 const Detail = () => {
   const [value, setValue] = React.useState(5);
@@ -11,8 +13,46 @@ const Detail = () => {
       <PosterDetail/>
       <div className="container">
         <div className="body">
+          <div style={{display:"flex"}}>
           <div className="div-left-detail-movie">
-            <div className="title-body">Top Billed Cast</div>
+            <div className="div-list-cast">
+                <div className="title-body">Top Billed Cast</div>
+                <div className="list-card-cast">
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                  <CardCast />
+                </div>
+                <div className="btn-view-full-cast">Full Cast & Crew</div>
+            </div>
+            <div className="div-list-cast">
+                <div className="title-body">Movie Content</div>
+                <p style={{paddingTop: 10}}>Puss phát hiện ra rằng niềm đam mê phiêu lưu mạo hiểm của anh đã gây ra hậu quả: Anh đã đốt cháy 8 trong số 9 mạng sống của mình, bây giờ chỉ còn lại đúng một mạng. Anh ta bắt đầu một cuộc hành trình để tìm Điều ước cuối cùng thần thoại trong Rừng Đen nhằm khôi phục lại chín mạng sống của mình. Chỉ còn một mạng sống, đây có lẽ sẽ là cuộc hành trình nguy hiểm nhất của Puss.</p>
+            </div>
+            <div className="div-list-cast">
+              <div className="title-body">Trailer</div>
+              <div className="div-trailer">
+                <img src={require('../../image/trailer.jpeg')} alt="movie pic" />
+              </div>
+            </div>
+            <div className="div-list-cast">
+              <div className="title-body">Comment</div>
+            </div>
+            <div className="div-list-cast">
+              <div className="title-body">Recommendations</div>
+              <div className="list-card-cast">
+                <CardRecommend/>
+                <CardRecommend/>
+                <CardRecommend/>
+                <CardRecommend/>
+                <CardRecommend/>
+              </div>
+            </div>
           </div>
 
           <div className="div-right-detail-movie">
@@ -55,6 +95,7 @@ const Detail = () => {
             </div>
           </div>
         </div> 
+        </div>
       </div>
     </div>
   )
