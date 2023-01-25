@@ -6,10 +6,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from logger import logger
 from config import settings
 from recommender.model_based import model_based_recommender
+from recommender.content_based import content_based_recommender
 from api import router
 
 
 model_based_recommender.load_model()
+content_based_recommender.build_model()
 app = FastAPI(
     title="Movie Recommender API",
     description="Development",
