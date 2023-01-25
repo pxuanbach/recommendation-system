@@ -1,0 +1,21 @@
+.div-genre{
+    padding-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.btn-genre{
+    width: max-content;
+    height: max-content;
+    border: 1px solid #ccc;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 5px;
+    margin-left: 0;
+}
+.btn-genre:hover{
+    background-color: rgb(56, 158, 247);
+    color: white;
+}
