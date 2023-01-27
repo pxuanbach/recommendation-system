@@ -10,7 +10,8 @@ from recommender.content_based import content_based_recommender
 from api import router
 
 
-model_based_recommender.load_model()
+model_based_recommender.build_cross_validator()
+model_based_recommender.fit()
 content_based_recommender.build_model()
 app = FastAPI(
     title="Movie Recommender API",
@@ -28,6 +29,14 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(router)
+
+@app.on_event("startup")
+def startup_event():
+    pass
+
+@app.on_event("shutdown")
+def shutdown_event():
+    model_based_recommender.save_model()
 
 @app.get("/")
 async def root():

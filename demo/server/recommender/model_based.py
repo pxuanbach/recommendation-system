@@ -2,17 +2,48 @@ from typing import List
 from pyspark.ml.recommendation import ALS, ALSModel
 from pyspark.sql.functions import col, explode
 from pyspark.sql.types import StructType, StructField, IntegerType, LongType, Row
+from pyspark.ml.evaluation import RegressionEvaluator
+from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
 
-from data import spark, movies
+from data import spark, movies, ratings
 
 
 class ModelBasedRecommendation:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, 
+        userCol="userId", itemCol="movieId", ratingCol="rating", 
+        nonnegative=True, implicitPrefs=False, coldStartStrategy="drop"):
+        self.als = ALS(userCol=userCol, itemCol=itemCol, ratingCol=ratingCol, 
+            nonnegative=nonnegative, implicitPrefs=implicitPrefs,
+            coldStartStrategy=coldStartStrategy)
+        (self.train,  self.test) = ratings.randomSplit([0.8, 0.2], seed = 1234)
+        self.cv = None
+        self.model = None
 
     def load_model(self) -> ALSModel:
         self.model = ALSModel.load("./static/trained")
         return self.model
+
+    def build_cross_validator(self):
+        # Add hyperparameters and their respective values to param_grid
+        param_grid = ParamGridBuilder() \
+            .addGrid(self.als.rank, [10, 50, 100]) \
+            .addGrid(self.als.regParam, [.01, .05, .1]) \
+            .build()
+        # Define evaluator as RMSE and print length of evaluator
+        evaluator = RegressionEvaluator(
+           metricName="rmse", 
+           labelCol="rating", 
+           predictionCol="prediction") 
+        # Build cross validation using CrossValidator
+        self.cv = CrossValidator(estimator=self.als, estimatorParamMaps=param_grid, evaluator=evaluator, numFolds=5)
+
+    def fit(self):
+        # model = self.cv.fit(self.train)
+        # self.model = model.bestModel
+        self.model = self.als.fit(self.train)
+
+    def save_model(self, path="./static/trained"):
+        self.model.save(path=path)
 
     async def get_recommendation(
         self, user_id: int, num_items: int

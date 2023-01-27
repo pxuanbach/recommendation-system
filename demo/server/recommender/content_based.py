@@ -88,7 +88,7 @@ class ContentBasedRecommendation:
         for i in idx:
             del sim_scores[i]
 
-        sim_scores = list(sorted(sim_scores.items(), key=lambda item: item[1], reverse=True))[:const.MOVIE_NUMBER]
+        sim_scores = list(sorted(sim_scores.items(), key=lambda item: item[1], reverse=True))[:5]
 
         movie_indices = [i[0] for i in sim_scores]
         movie_similarity = [i[1] for i in sim_scores]
