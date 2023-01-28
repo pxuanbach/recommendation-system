@@ -37,10 +37,13 @@ class ModelBasedRecommendation:
         # Build cross validation using CrossValidator
         self.cv = CrossValidator(estimator=self.als, estimatorParamMaps=param_grid, evaluator=evaluator, numFolds=5)
 
-    def fit(self):
-        # model = self.cv.fit(self.train)
-        # self.model = model.bestModel
-        self.model = self.als.fit(self.train)
+    def fit(self, is_cross_validate=False):
+        if is_cross_validate:
+            self.build_cross_validator()
+            model = self.cv.fit(self.train)
+            self.model = model.bestModel
+        else:
+            self.model = self.als.fit(self.train)
 
     def save_model(self, path="./static/trained"):
         self.model.save(path=path)

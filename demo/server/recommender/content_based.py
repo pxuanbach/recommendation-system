@@ -1,5 +1,6 @@
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
 import pandas as pd
 from pandas import isnull, notnull
 from data import movies
@@ -36,63 +37,47 @@ class ContentBasedRecommendation:
 
     def build_model(self):
         """
-        Tách các giá trị của genres ở từng bộ phim đang được ngăn cách bởi '|'
+        Separate genres values for each movie being separated by '|'
         """
-        self.movies['genres'] = self.movies['genres'].str.split('|')
-        self.movies['genres'] = self.movies['genres'].fillna("").astype('str')
-        self.tfidf_matrix = tfidf_matrix(self.movies)
+        clone_movies = movies.toPandas()
+        clone_movies['genres'] = clone_movies['genres'].str.split('|')
+        clone_movies['genres'] = clone_movies['genres'].fillna("").astype('str')
+        self.tfidf_matrix = tfidf_matrix(clone_movies)
         self.cosine_sim = cosine_sim(self.tfidf_matrix)
 
     def refresh(self):
         """
-        Chuẩn hóa dữ liệu và tính toán lại ma trận
+        Normalize the data and recalculate the matrix
         """
         self.build_model()
 
     def fit(self):
         self.refresh()
 
-    # def genre_recommendations(self, title, top_x):
-    #     """
-    #     Xây dựng hàm trả về danh sách top film tương đồng theo tên film truyền vào:
-    #     + Tham số truyền vào gồm "title" là tên film và "topX" là top film tương đồng cần lấy
-    #     + Tạo ra list "sim_score" là danh sách điểm tương đồng với film truyền vào
-    #     + Sắp xếp điểm tương đồng từ cao đến thấp
-    #     + Trả về top danh sách tương đồng cao nhất theo giá trị "topX" truyền vào
-    #     """
-    #     titles = self.movies['title']
-    #     indices = pd.Series(self.movies.index, index=self.movies['title'])
-    #     idx = indices[title]
-    #     sim_scores = list(enumerate(self.cosine_sim[idx]))
-    #     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    #     sim_scores = sim_scores[1:top_x + 1]
-    #     movie_indices = [i[0] for i in sim_scores]
-    #     return sim_scores, titles.iloc[movie_indices].values
-
-    def contend_based_recommendations(self, movie, titles):
-        """read matrix create similarity function and call main function"""
-        cosine_sim = linear_kernel(self.tfidf_matrix, self.tfidf_matrix)
-        return self.get_recommendations(movie, titles, cosine_sim)
-    
-    def get_recommendations(movie, titles, cosine_sim):
+    def get_recommendations(self, titles, num_items=5) -> pd.DataFrame:
         """in this function we find similarity score for specific movie sorted
         and gets all metadata for it"""
-        indices = pd.Series(movie.index, index=movie['title']).drop_duplicates()
-        idx = {indices[t] for t in titles}
+        indices = pd.Series(self.movies.index, index=self.movies['title']).drop_duplicates()
+        idx = [indices[t] for t in titles]
         sim_scores = dict()
         for movie_idx in idx:
-            sim = cosine_sim[movie_idx]
+            sim = self.cosine_sim[movie_idx]
             for i, s in enumerate(sim):
-                sim_scores[i] = s if s > sim_scores.get(i, 0) else sim_scores.get(i, 0)
+                if isinstance(s, np.float64):
+                    if s > sim_scores.get(i, 0):
+                        sim_scores[i] = s
 
-        for i in idx:
-            del sim_scores[i]
+        # for i in idx:
+        #     print(i)
+        #     del sim_scores[i]
 
-        sim_scores = list(sorted(sim_scores.items(), key=lambda item: item[1], reverse=True))[:5]
+        sim_scores = list(sorted(sim_scores.items(), key=lambda item: item[1], reverse=True))[:num_items]
 
         movie_indices = [i[0] for i in sim_scores]
         movie_similarity = [i[1] for i in sim_scores]
-        return pd.DataFrame(zip(movie['id'].iloc[movie_indices], movie['title'].iloc[movie_indices], movie_similarity),
-                            columns=["movieId", "title", "score"])
+        return pd.DataFrame(zip(self.movies['movieId'].iloc[movie_indices], 
+            self.movies['title'].iloc[movie_indices], 
+            self.movies['genres'].iloc[movie_indices], movie_similarity),
+            columns=["movieId", "title", "genres", "score"])
 
 content_based_recommender = ContentBasedRecommendation()

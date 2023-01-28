@@ -12,9 +12,9 @@ router = APIRouter(prefix="/content-based")
 
 @router.get(
     "/{user_id}",
-    # response_model=List[Recommend]
+    response_model=List[Recommend]
 )
-async def content_based_recommend(
+def content_based_recommend(
     user_id: int,
     num_items: int = 10,
 ):
@@ -28,9 +28,10 @@ async def content_based_recommend(
         movie_arr.append(row.asDict())
     
     list_movie_name = [x["title"] for x in movie_arr]
-    list_recommend = []
-    for movie_name in list_movie_name:
-        result, _v = content_based_recommender.genre_recommendations(movie_name, 10)
-        print(result, _v)
-
-    # return list_recommend
+    result = content_based_recommender.get_recommendations(list_movie_name, num_items)
+    recommend_arr= [
+        (
+            Recommend(**row)
+        ) for index, row in result.iterrows()
+    ]  
+    return recommend_arr

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     API_PATH: str = "/api/v1"
     STATIC_PATH: str = "./static"
     LOG_PATH: str = "./static/0logs.log"
+    THEMOVIEDB_API_KEY: str = ""
 
 
 settings = Settings()

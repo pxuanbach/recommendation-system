@@ -10,7 +10,6 @@ from recommender.content_based import content_based_recommender
 from api import router
 
 
-model_based_recommender.build_cross_validator()
 model_based_recommender.fit()
 content_based_recommender.build_model()
 app = FastAPI(
