@@ -27,3 +27,7 @@ ratings = spark.read.csv(f"{data_path}ratings.csv", header=True)\
     .withColumn('movieId', col('movieId').cast('integer'))\
     .withColumn('rating', col('rating').cast('float'))\
     .drop('timestamp')
+links = spark.read.csv(f"{data_path}links.csv", header=True)\
+    .withColumn('movieId', col('movieId').cast('integer'))\
+    .withColumn('imdbId', col('imdbId').cast('string'))\
+    .withColumn('tmdbId', col('tmdbId').cast('integer'))

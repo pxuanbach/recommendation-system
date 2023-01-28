@@ -1,12 +1,27 @@
 import requests
 from config import settings
+from data import links
 
 
-def fetch_poster(movie_id):
+def convert_movielen_id_to_tmdb_id(movielen_id):
+    result = links.select("*").filter(f"movieId == {movielen_id}").first().asDict()
+    return result["tmdbId"]
+
+
+def fetch_movie_data(movie_id) -> dict:
     """generate poster link based on id"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={settings.THEMOVIEDB_API_KEY}&language=en-US"
+    tmdb_id = convert_movielen_id_to_tmdb_id(movie_id)
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={settings.THEMOVIEDB_API_KEY}&language=en-US"
     data = requests.get(url)
     data = data.json()
-    poster_path = data['poster_path']
-    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-    return full_path
+    if "success" not in data:
+        return {
+            "overview": data['overview'],
+            "poster_path": "https://image.tmdb.org/t/p/w500/" + data['poster_path'],
+            "release_date": data['release_date'],
+        }
+    return {
+        "overview": "",
+        "poster_path": "",
+        "release_date": "",
+    }
