@@ -12,11 +12,11 @@ router = APIRouter(prefix="/model-based")
     "/{user_id}",
     response_model=List[Recommend]
 )
-async def model_based_recommend(
+def model_based_recommend(
     user_id: int,
     num_items: int = 10,
 ):
-    result = await model_based_recommender.get_recommendation(user_id, num_items)
+    result = model_based_recommender.get_recommendation(user_id, num_items)
     recommend_arr = []
     for row in result:
         recommend_arr.append(row.asDict())

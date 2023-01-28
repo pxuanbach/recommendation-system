@@ -48,7 +48,7 @@ class ModelBasedRecommendation:
     def save_model(self, path="./static/trained"):
         self.model.save(path=path)
 
-    async def get_recommendation(
+    def get_recommendation(
         self, user_id: int, num_items: int
     ) -> List[Row]:
         nrecommendations = self.model.recommendForAllUsers(num_items)
@@ -59,7 +59,7 @@ class ModelBasedRecommendation:
         result = nrecommendations.join(movies, on='movieId').filter(f'userId = {user_id}')
         return result.collect()
 
-    async def get_recommendation_subset(
+    def get_recommendation_subset(
         self, user_id: int, num_items: int
     ) -> List[Row]:
         # Manually create adataframe to get recommendations
