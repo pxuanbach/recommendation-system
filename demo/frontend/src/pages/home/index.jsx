@@ -1,7 +1,38 @@
 import React, {useState, useEffect} from "react";
 import './index.css'
 import Card from "../../components/card.jsx"
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
+const marks = [
+  {
+    value: 0,
+    label: '5',
+  },
+  {
+    value: 20,
+    label: '6',
+  },
+  {
+    value: 40,
+    label: '7',
+  },
+  {
+    value: 60,
+    label: '8',
+  },
+  {
+    value: 80,
+    label: '9',
+  },
+  {
+    value: 100,
+    label: '10',
+  },
+];
+function valuetext(value) {
+  return `${value}`;
+}
 const Home = () => {
   const [contentBasedRec, setContentBasedRec] = useState([])
 
@@ -29,6 +60,20 @@ const Home = () => {
             Search
           </div>
         </div>
+      </div>
+
+      <div className="div-score">
+        <div className="title-body">Recommended movie number</div>
+        <Box sx={{ width: 600, marginLeft: 2, marginTop: 2 }}>
+        <Slider
+          aria-label="Custom marks"
+          defaultValue={30}
+          getAriaValueText={valuetext}
+          step={20}
+          // valueLabelDisplay="auto"
+          marks={marks}
+        />
+      </Box>
       </div>
 
       <div className="popular-film">
