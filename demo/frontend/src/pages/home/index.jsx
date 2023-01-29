@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import Card from "../../components/card.jsx";
+import GenreCard from "../../components/genreCard";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import Stack from '@mui/material/Stack';
 import axiosInstance from "../../services/httpService";
 import {
+  getRatedGenresOfUserEndPoint,
   getContentBasedRecommendEndPoint,
   getModelBasedRecommendEndPoint,
 } from "../../services/endpointService";
 
 const marks = [
   {
-    value: 0,
+    value: 5,
     label: "5",
   },
   {
-    value: 20,
+    value: 6,
     label: "6",
   },
   {
-    value: 40,
+    value: 7,
     label: "7",
   },
   {
-    value: 60,
+    value: 8,
     label: "8",
   },
   {
-    value: 80,
+    value: 9,
     label: "9",
   },
   {
-    value: 100,
+    value: 10,
     label: "10",
   },
 ];
@@ -39,19 +42,37 @@ function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
+  const userId = 318
+  const [numItems, setNumItems] = useState(7);
+  const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
   const [modelBasedRec, setModelBasedRec] = useState([]);
+
+  const getGenreWatched = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getRatedGenresOfUserEndPoint({
+          userId: userId,
+        })
+      );
+      let data = res.data.data;
+      const sortedData = data.sort((a, b) => b.count - a.count)
+      setGenreWatched(sortedData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getContentBasedRecommend = async () => {
     try {
       const res = await axiosInstance.get(
         getContentBasedRecommendEndPoint({
-          userId: 5,
-          numItems: 10,
+          userId: userId,
+          numItems: numItems,
         })
       );
       const data = res.data;
-      console.log(data);
+      // console.log(data);
       setContentBasedRec(data);
     } catch (err) {
       console.log(err);
@@ -62,12 +83,12 @@ const Home = () => {
     try {
       const res = await axiosInstance.get(
         getModelBasedRecommendEndPoint({
-          userId: 5,
-          numItems: 10,
+          userId: userId,
+          numItems: numItems,
         })
       );
       const data = res.data;
-      console.log(data);
+      // console.log(data);
       setModelBasedRec(data);
     } catch (err) {
       console.log(err);
@@ -75,9 +96,13 @@ const Home = () => {
   };
 
   useEffect(() => {
+    getGenreWatched();
+  }, [])
+
+  useEffect(() => {
     getContentBasedRecommend();
     getModelBasedRecommend();
-  }, []);
+  }, [numItems]);
 
   return (
     <div className="container">
@@ -97,17 +122,33 @@ const Home = () => {
             <div className="btn-search">Search</div>
           </div>
         </div>
-
+        <div className="div-score">
+          <div className="title-body">Movie genre watched</div>
+          <div style={{
+            display: 'flex',
+            width: '100%', 
+            flexWrap: 'wrap',
+            gap: '0px 12px'
+          }}>
+            {genreWatched && genreWatched.map((genre, index) => (
+              <GenreCard key={index} genre={genre}/>
+            ))}
+          </div>
+        </div>
         <div className="div-score">
           <div className="title-body">Recommended movie number</div>
-          <Box sx={{ width: 600, marginLeft: 2, marginTop: 2 }}>
+          <Box sx={{width: 800, marginLeft: 2, marginTop: 2 }}>
             <Slider
+              value={numItems}
+              onChangeCommitted={(_, v) => setNumItems(v)}
               aria-label="Custom marks"
-              defaultValue={30}
+              defaultValue={7}
               getAriaValueText={valuetext}
-              step={20}
+              step={1}
               // valueLabelDisplay="auto"
               marks={marks}
+              min={5}
+              max={10}
             />
           </Box>
         </div>

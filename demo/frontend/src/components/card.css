@@ -19,6 +19,7 @@
 .name-item{
     font-weight: bold;
     white-space: pre-wrap;
+    max-width: 180px;
 }
 .time-item{
     font-weight: 300;

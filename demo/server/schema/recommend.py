@@ -11,3 +11,4 @@ class Recommend(BaseModel):
     poster_path: Optional[str]
     overview: Optional[str]
     release_date: Optional[str]
+    runtime: Optional[int]

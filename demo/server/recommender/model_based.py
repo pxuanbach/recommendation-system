@@ -15,7 +15,7 @@ class ModelBasedRecommendation:
         self.als = ALS(userCol=userCol, itemCol=itemCol, ratingCol=ratingCol, 
             nonnegative=nonnegative, implicitPrefs=implicitPrefs,
             coldStartStrategy=coldStartStrategy)
-        (self.train,  self.test) = ratings.randomSplit([0.8, 0.2], seed = 1234)
+        (self.train,  self.test) = ratings.filter("rating >= 3").randomSplit([0.8, 0.2], seed = 1234)
         self.cv = None
         self.model = None
 

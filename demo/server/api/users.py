@@ -58,6 +58,7 @@ async def get_rated_movies_of_user(
     total = ratings.filter(f"userId == {user_id}").count()
     result = ratings.join(movies, on="movieId")\
         .filter(f"userId == {user_id}")\
+        .filter("rating >= 3")\
         .limit(max_limit)\
         .collect()
     for row in result:
