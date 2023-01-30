@@ -8,6 +8,9 @@
     padding-bottom: 30px;
     border-bottom: 1px solid rgb(207, 204, 204);
 }
+.title-body{
+    padding-top: 20px;
+}
 .list-card-cast{
     width: 100%;
     display: flex;
