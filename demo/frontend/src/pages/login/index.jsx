@@ -2,6 +2,7 @@ import React from "react";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import { Link } from "react-router-dom";
 import "./index.css"
 
 
@@ -38,9 +39,9 @@ const Login = () => {
               Bạn cần trợ giúp?
             </div>
           </div>
-          <div className="btn-signup">
+          <div className="text-signup">
             <h3>Bạn mới tham gia Recomender Film?</h3>
-            <div className="text-btn-signup">Đăng ký ngay</div>
+            <Link to={"/signup"} className="text-btn-signup">Đăng ký ngay</Link>
           </div>
         </div>
       </div>

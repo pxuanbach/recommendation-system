@@ -64,9 +64,9 @@
     cursor: pointer;
 }
 .btn-text:hover{
-    color: rgb(93, 108, 240);
+    color: rgb(15, 66, 118);
 }
-.btn-signup{
+.text-signup{
     display: flex;
     width: 85.5%;
     margin-top: 30px;
@@ -74,7 +74,7 @@
 }
 .text-btn-signup{
     margin-left: 5px;
-    color: rgb(93, 108, 240);
+    color: rgb(15, 66, 118);
     cursor: pointer;
     font-size: 16px;
 }

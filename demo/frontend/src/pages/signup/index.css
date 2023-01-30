@@ -1,0 +1,73 @@
+.div-container-signup{
+    display: flex;
+    padding-top: 30px;
+}
+.div-left-signup{
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 10px 10px 10px 10px;
+    padding-bottom: 20px;
+}
+.div-benefit{
+    background-color: rgb(15, 66, 118);
+    padding: 25px;
+    border-radius: 10px 10px 0 0 ;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+
+}
+.div-info-benefit{
+    display: flex;
+    align-items: center;
+    padding: 22px;
+    padding-top: 20px;
+    padding-bottom: 0;
+}
+.div-info-benefit > p{
+    font-size: 15px;
+    padding-left: 15px;
+}
+.div-right-signup{
+    flex: 3.5;
+    padding-left: 30px;
+}
+.div-right-signup > p {
+    padding-top: 8px;
+    font-weight: 400;
+}
+.title-signup{
+    font-size: 22px;
+    font-weight: bold;
+}
+.textinput-signup{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+.input{
+    border: 1px solid #ccc;
+    border-radius: 0;
+    padding: 8px;
+    padding-left: 15px;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+.btn-signup{
+    background-color: rgb(15, 66, 118);
+    padding: 8px;
+    color: white;
+    font-weight: 600;
+    padding-left: 25px;
+    padding-right: 25px;
+    width: fit-content;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.btn-signup:hover{
+    background-color: white;
+    border: 1px solid rgb(15, 66, 118);  
+    color: rgb(15, 66, 118);
+}
