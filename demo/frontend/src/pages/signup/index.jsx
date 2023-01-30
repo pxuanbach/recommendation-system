@@ -44,19 +44,19 @@ const SignUp = () => {
             <p>Signing up for an account is free and easy. Fill out the form below to get started. JavaScript is required to to continue.</p>
             <div className="textinput-signup">
               <label>Username</label>
-              <input className="input" type="text" name="" placeholder="Nguyễn Tiến Đạt"></input>
+              <input className="input-signup" type="text" name="" placeholder="Nguyễn Tiến Đạt"></input>
             </div>
             <div className="textinput-signup">
               <label>Password (4 characters minimum)</label>
-              <input className="input" type="text" name="" placeholder="********"></input>
+              <input className="input-signup" type="text" name="" placeholder="********"></input>
             </div>
             <div className="textinput-signup">
               <label>Password Confirm</label>
-              <input className="input" type="text" name="" placeholder="********"></input>
+              <input className="input-signup" type="text" name="" placeholder="********"></input>
             </div>
             <div className="textinput-signup">
               <label>Email</label>
-              <input className="input" type="text" name="" placeholder="abc@gmail.com"></input>
+              <input className="input-signup" type="text" name="" placeholder="abc@gmail.com"></input>
             </div>
             <p style={{marginTop: 25}}>By clicking the "Sign up" button below, I certify that I have read and agree to the TMDB terms of use and privacy policy.</p>
             <div className="btn-signup">Đăng ký</div>
