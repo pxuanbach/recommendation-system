@@ -1,56 +1,52 @@
-import React from "react";
-import "./poster-detail.css"
-import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
+import React, { useEffect, useState } from "react";
+import "./poster-detail.css";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import { processingRuntime } from "../services/movieService";
+import dayjs from "dayjs";
 
-const PosterDetail = () => {
-    const [value, setValue] = React.useState(5);
-    return(
-        <div className="poster">
-        <img src={require('../image/poster.png')} alt="poster" />
-        <div className="container-detail-movie">
-          <div className="detail-movie">
-            <div className="image-movie">
-              <img src={require('../image/meo.jpg')} alt="movie pic" />
+const PosterDetail = ({movie}) => {
+  return (
+    <div className="poster">
+      <img src={movie.backdrop_path} alt="poster" />
+      <div className="container-detail-movie">
+        <div className="detail-movie">
+          <div className="image-movie">
+            <img src={movie.poster_path} alt="movie pic" />
+          </div>
+          <div className="content-movie">
+            <div className="name-movie">
+              {movie.title}
             </div>
-            <div className="content-movie">
-              <div className="name-movie">Mèo Đi Hia: Điều Ước Cuối Cùng (2022)</div>
-              <div className="genre-movie">Thể loại: Phim Hoạt Hình, Phim Hành Động, Phim Phưu Lưu, Phim Hài, Phim Gia Đình, Phim Giả Tượng</div>
-              <div className="date-start">Ngày chiếu: 30/12/2022</div>
-              <div className="time">Thời lượng: 1h43m</div>
-              <div className="rate-movie">
-                Đánh giá: 
-                <Box
-                  sx={{
-                      '& > legend': { mt: 2 }, padding: 0.5, paddingLeft: 2
-                  }}
-                  >
-                      <Rating name="read-only" value={value} readOnly />
-                  </Box>
-              </div>
-              <div className="overview">
-                  Overview
-                  <p>Puss phát hiện ra rằng niềm đam mê phiêu lưu mạo hiểm của anh đã gây ra hậu quả: Anh đã đốt cháy 8 trong số 9 mạng sống của mình, bây giờ chỉ còn lại đúng một mạng. Anh ta bắt đầu một cuộc hành trình để tìm Điều ước cuối cùng thần thoại trong Rừng Đen nhằm khôi phục lại chín mạng sống của mình. Chỉ còn một mạng sống, đây có lẽ sẽ là cuộc hành trình nguy hiểm nhất của Puss.</p>
-      
-              </div>
-              <div className="div-actor">
-                <div className="name-position-actor">
-                  <div className="name-actor">Tommy Swerdlow</div>
-                  <div className="position">Screenplay, Story</div>
-                </div>
-                <div className="name-position-actor">
-                  <div className="name-actor">Joel Crawford</div>
-                  <div className="position">Director</div>
-                </div>
-                <div className="name-position-actor">
-                  <div className="name-actor">Paul Fisher</div>
-                  <div className="position">Screenplay</div>
-                </div>
-              </div>
+            <div className="genre-movie">
+              Genre: {movie.genres.replaceAll("|", ", ")}
+            </div>
+            <div className="date-start">Release Date: {dayjs(movie.release_date).format("DD/MM/YYYY")}</div>
+            <div className="time">Duration: {processingRuntime(movie.runtime)}</div>
+            <div className="rate-movie">
+              Rating:
+              <Box
+                sx={{
+                  "& > legend": { mt: 2 },
+                  padding: 0.5,
+                  paddingLeft: 2,
+                }}
+              >
+                <Rating name="read-only" value={movie.vote_average} readOnly />
+              </Box>
+              {movie.vote_average.toFixed(1)}
+            </div>
+            <div className="genre-movie">
+              Vote Count: {movie.vote_count}
+            </div>
+            <div className="overview">
+              Overview
+              <p>{movie.overview}</p>
             </div>
           </div>
         </div>
       </div>
-    )
-}
-export default PosterDetail
+    </div>
+  );
+};
+export default PosterDetail;

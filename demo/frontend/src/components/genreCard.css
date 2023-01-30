@@ -1,0 +1,19 @@
+
+.genres-card{
+    display: flex;
+    background-color: black;
+    align-items: center;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+.genres-card-content{
+    border-radius: 7px;
+    background: linear-gradient(to right, rgba(192,254,207, 1) 0%, rgba(30,213,169, 1) 100%);
+    padding: 3px 10px;
+    font-weight: bold;
+    color: rgba(3,37,65, 1);
+}
+.genres-card-count{
+    color: white;
+    padding: 3px 10px;
+}

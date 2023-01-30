@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const CardMovies = () => {
     const [value, setValue] = React.useState(5);
     return (
-        <Link to={"/detail"} className="container-card-movies">
+        <Link to={"/movies/1"} className="container-card-movies">
             <div className="image-card-movies">
             </div>
             <div className="detail-card-movies">
