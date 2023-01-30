@@ -53,6 +53,7 @@
     border-radius: 5px;
     margin-top: 5px;
     width: 100%;
+    outline: none;
 }
 .btn-signup{
     background-color: rgb(15, 66, 118);
