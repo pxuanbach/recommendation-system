@@ -37,13 +37,53 @@ const marks = [
     value: 10,
     label: "10",
   },
+  {
+    value: 11,
+    label: "11",
+  },
+  {
+    value: 12,
+    label: "12",
+  },
+  {
+    value: 13,
+    label: "13",
+  },
+  {
+    value: 14,
+    label: "14",
+  },
+  {
+    value: 15,
+    label: "15",
+  },
+  {
+    value: 16,
+    label: "16",
+  },
+  {
+    value: 17,
+    label: "17",
+  },
+  {
+    value: 18,
+    label: "18",
+  },
+  {
+    value: 19,
+    label: "19",
+  },
+  {
+    value: 20,
+    label: "20",
+  },
 ];
 function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
   const userId = 318
-  const [numItems, setNumItems] = useState(7);
+  const [numItems, setNumItems] = useState(10);
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
   const [modelBasedRec, setModelBasedRec] = useState([]);
@@ -137,8 +177,9 @@ const Home = () => {
         </div>
         <div className="div-score">
           <div className="title-body">Recommended movie number</div>
-          <Box sx={{width: 800, marginLeft: 2, marginTop: 2 }}>
+          <Box fullWidth sx={{marginX: 2, marginTop: 2 }}>
             <Slider
+              
               value={numItems}
               onChangeCommitted={(_, v) => setNumItems(v)}
               aria-label="Custom marks"
@@ -148,7 +189,7 @@ const Home = () => {
               // valueLabelDisplay="auto"
               marks={marks}
               min={5}
-              max={10}
+              max={20}
             />
           </Box>
         </div>

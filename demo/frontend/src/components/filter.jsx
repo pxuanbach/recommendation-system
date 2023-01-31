@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,23 +12,25 @@ import Typography from '@mui/material/Typography';
 import TextDate from "./filter-date.jsx"
 import "./filter.css"
 
-export default function Filter() {
-  const [value, setValue] = React.useState(2);
+export default function Filter({handleChangeShowType}) {
+  
+
   return (
     <div>
       <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">Show me</FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="everything"
+          defaultValue="all"
           name="radio-buttons-group"
+          onChange={(e) => handleChangeShowType(e.target.value)}
         >
-          <FormControlLabel value="everything" control={<Radio />} label="Everything" />
-          <FormControlLabel value="haven't" control={<Radio />} label="Movies I Haven't Seen" />
-          <FormControlLabel value="have" control={<Radio />} label="Movies I Haven Seen" />
+          <FormControlLabel value="all" control={<Radio />} label="Everything" />
+          <FormControlLabel value="havenot" control={<Radio />} label="Movies I Haven't Seen" />
+          <FormControlLabel value="have" control={<Radio />} label="Movies I Have Seen" />
         </RadioGroup>
       </FormControl>
-      <div style={{paddingTop: 20}}>
+      {/* <div style={{paddingTop: 20}}>
       <FormGroup>
         <FormLabel id="demo-radio-buttons-group-label">Availabilities</FormLabel>
         <FormControlLabel control={<Checkbox defaultChecked />} label="Search all availabilities" />
@@ -36,7 +38,7 @@ export default function Filter() {
         <FormControlLabel control={<Checkbox />} label="Free" />
         <FormControlLabel control={<Checkbox />} label="Ads" />
       </FormGroup>
-      </div>
+      </div> */}
       <div style={{paddingTop: 20}}>
         <FormLabel id="demo-radio-buttons-group-label">Release Dates</FormLabel>
         <div style={{paddingTop: 20, lineHeight:5}}>
@@ -61,7 +63,7 @@ export default function Filter() {
           <div className='btn-genre'>Phim Kinh Dị</div>
         </div>
       </div>
-      <div style={{paddingTop: 20}}>
+      {/* <div style={{paddingTop: 20}}>
         <FormLabel id="demo-radio-buttons-group-label">User Score</FormLabel>
         
         <Box
@@ -79,7 +81,7 @@ export default function Filter() {
           }}
         />
       </Box>
-      </div>
+      </div> */}
     </div>
   );
 }
