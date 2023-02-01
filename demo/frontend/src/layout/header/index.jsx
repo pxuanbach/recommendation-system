@@ -1,11 +1,21 @@
-import React, {useEffect} from "react";
+import React, { useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./index.css";
+import { UserContext } from "../../UserContext";
 
 const Header = () => {
-  const selectedClassName = "rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
-  const unSelectedClassName = "border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-  const {pathname} = useLocation()
+  const selectedClassName =
+    "rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white";
+  const unSelectedClassName =
+    "border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700";
+  const { pathname } = useLocation();
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('userId');
+    setUser(null)
+  }
 
   // useEffect(() => {
   //   console.log(pathname)
@@ -26,18 +36,35 @@ const Header = () => {
             </span>
           </Link>
           <div class="flex items-center lg:order-2">
-            <Link
-              to={"/login"}
-              class=" text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none "
-            >
-              Log in
-            </Link>
-            <Link
-              to={"/signup"}
-              class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none"
-            >
-              Sign up
-            </Link>
+            {user ? (
+              <>
+                <div class="text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none">
+                  Current user: {user.userId}
+                </div>
+                <Link
+                  to={"/"}
+                  class="text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none"
+                  onClick={handleLogout}
+                >
+                  Log out
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={"/login"}
+                  class=" text-white focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none "
+                >
+                  Log in
+                </Link>
+                <Link
+                  to={"/signup"}
+                  class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"
@@ -80,7 +107,9 @@ const Header = () => {
               <li>
                 <Link
                   to={""}
-                  class={`block py-2 pr-4 pl-3 text-white ${pathname === "/" ? selectedClassName : unSelectedClassName}`}
+                  class={`block py-2 pr-4 pl-3 text-white ${
+                    pathname === "/" ? selectedClassName : unSelectedClassName
+                  }`}
                   aria-current="page"
                 >
                   Home
@@ -89,7 +118,11 @@ const Header = () => {
               <li>
                 <Link
                   to={"movies"}
-                  class={`block py-2 pr-4 pl-3 text-white ${pathname === "/movies" ? selectedClassName : unSelectedClassName}`}
+                  class={`block py-2 pr-4 pl-3 text-white ${
+                    pathname === "/movies"
+                      ? selectedClassName
+                      : unSelectedClassName
+                  }`}
                 >
                   Movies
                 </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./index.css";
 import Card from "../../components/card.jsx";
 import GenreCard from "../../components/genreCard";
@@ -8,9 +8,10 @@ import Stack from '@mui/material/Stack';
 import axiosInstance from "../../services/httpService";
 import {
   getRatedGenresOfUserEndPoint,
-  getContentBasedRecommendEndPoint,
-  getModelBasedRecommendEndPoint,
+  getContentBasedUserIdRecommendEndPoint,
+  getModelBasedUserRecommendEndPoint,
 } from "../../services/endpointService";
+import { UserContext } from "../../UserContext";
 
 const marks = [
   {
@@ -82,7 +83,7 @@ function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
-  const userId = 318
+  const {user } = useContext(UserContext)
   const [numItems, setNumItems] = useState(10);
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
@@ -92,7 +93,7 @@ const Home = () => {
     try {
       const res = await axiosInstance.get(
         getRatedGenresOfUserEndPoint({
-          userId: userId,
+          userId: user.userId,
         })
       );
       let data = res.data.data;
@@ -106,8 +107,8 @@ const Home = () => {
   const getContentBasedRecommend = async () => {
     try {
       const res = await axiosInstance.get(
-        getContentBasedRecommendEndPoint({
-          userId: userId,
+        getContentBasedUserIdRecommendEndPoint({
+          userId: user.userId,
           numItems: numItems,
         })
       );
@@ -122,8 +123,8 @@ const Home = () => {
   const getModelBasedRecommend = async () => {
     try {
       const res = await axiosInstance.get(
-        getModelBasedRecommendEndPoint({
-          userId: userId,
+        getModelBasedUserRecommendEndPoint({
+          userId: user.userId,
           numItems: numItems,
         })
       );

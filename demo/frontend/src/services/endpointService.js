@@ -3,11 +3,16 @@ const prefix = "/api";
 const getRatedGenresOfUserEndPoint = (param) => `${prefix}/users/${param.userId}/genres`
 
 const getContentBasedRecommendEndPoint = (param) =>
+  `${prefix}/recommend/content-based/?title=${param.title}&num_items=${param.numItems || 10
+  }`;
+
+
+const getContentBasedUserIdRecommendEndPoint = (param) =>
   `${prefix}/recommend/content-based/${param.userId}?num_items=${param.numItems || 10
   }`;
 
-const getModelBasedRecommendEndPoint = (param) =>
-  `${prefix}/recommend/model-based/${param.userId}?num_items=${param.numItems || 10
+const getModelBasedUserRecommendEndPoint = (param) =>
+  `${prefix}/recommend/model-based/users/${param.userId}?num_items=${param.numItems || 10
   }`;
 
 const getMoviesEndPoint = (param) => {
@@ -23,7 +28,8 @@ const getUserByIdEndPoint = (param) => `${prefix}/users/${param.userId}`
 export {
   getRatedGenresOfUserEndPoint,
   getContentBasedRecommendEndPoint,
-  getModelBasedRecommendEndPoint,
+  getContentBasedUserIdRecommendEndPoint,
+  getModelBasedUserRecommendEndPoint,
   getMoviesEndPoint,
   getMovieByIdEndPoint,
   getUserByIdEndPoint,

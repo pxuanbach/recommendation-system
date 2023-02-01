@@ -5,7 +5,7 @@ from pyspark.sql.functions import avg, count
 
 from data import movies, ratings
 from schema.movie import Movie
-from utils import fetch_movie_data
+from utils import fetch_movie_data, fetch_movie_credits, fetch_movie_keywords
 
 
 router = APIRouter(prefix="/movies")
@@ -102,4 +102,10 @@ async def get_movie_by_id(
         "vote_average": avg_rating["vote_average"],
         "vote_count": avg_rating["vote_count"]
     })
+
+    movie_credit = fetch_movie_credits(movie["movieId"])
+    movie.update(**movie_credit)
+
+    movie_keywords = fetch_movie_keywords(movie["movieId"])
+    movie.update(**movie_keywords)
     return movie

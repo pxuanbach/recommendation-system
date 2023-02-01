@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from "react";
-import "./index.css"
-import Sort from "../../components/sort.jsx"
-import Filter from "../../components/filter.jsx"
+import React, { useState, useEffect, useContext } from "react";
+import "./index.css";
+import Sort from "../../components/sort.jsx";
+import Filter from "../../components/filter.jsx";
 import CardMovies from "../../components/cardMovies";
 import axiosInstance from "../../services/httpService";
 import { getMoviesEndPoint } from "../../services/endpointService";
+import { UserContext } from "../../UserContext";
 
 const Movies = () => {
-  const [isLoadMore, setIsLoadMore] = useState(false)
+  const { user } = useContext(UserContext);
+  const [isLoadMore, setIsLoadMore] = useState(false);
   const [movies, setMovies] = useState([]);
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(18);
@@ -15,10 +17,10 @@ const Movies = () => {
 
   const handleChangeShowType = (value) => {
     // console.log(value)
-    setIsLoadMore(false)
-    setMovies([])
-    setShowType(value)
-  }
+    setIsLoadMore(false);
+    setMovies([]);
+    setShowType(value);
+  };
 
   const getMovies = async () => {
     try {
@@ -27,16 +29,16 @@ const Movies = () => {
           skip: skip,
           limit: limit,
           showType: showType,
-          userId: 2
+          userId: user?.userId,
         })
       );
       const data = res.data;
       if (data.page === data.total_page) {
-        setIsLoadMore(false)
+        setIsLoadMore(false);
       } else {
-        setIsLoadMore(true)
+        setIsLoadMore(true);
       }
-      const mergeMovies = movies.concat(data.data)
+      const mergeMovies = movies.concat(data.data);
       setMovies(mergeMovies);
     } catch (err) {
       console.log(err);
@@ -45,12 +47,12 @@ const Movies = () => {
 
   const handleLoadMore = (e) => {
     e.preventDefault();
-    setSkip(skip+limit)
-  }
+    setSkip(skip + limit);
+  };
 
   useEffect(() => {
     getMovies();
-  }, [skip, showType])
+  }, [skip, showType]);
 
   return (
     <div className="container">
@@ -65,22 +67,31 @@ const Movies = () => {
             <div className="div-sort">
               <h2 className="title-sort">Filter</h2>
               <div className="div-filter">
-                <Filter handleChangeShowType={handleChangeShowType}/>
+                <Filter
+                  user={user}
+                  handleChangeShowType={handleChangeShowType}
+                />
               </div>
             </div>
           </div>
 
           <div className="div-right">
             <div className="body-right">
-              {movies && movies.map((movie) => (
-                <CardMovies key={movie.movieId} showType={showType} movie={movie}/>
-              ))}
+              {movies &&
+                movies.map((movie) => (
+                  <CardMovies
+                    key={movie.movieId}
+                    showType={showType}
+                    movie={movie}
+                  />
+                ))}
             </div>
             {isLoadMore && <button onClick={handleLoadMore}>Load more</button>}
           </div>
         </div>
       </div>
     </div>
-)};
+  );
+};
 
 export default Movies;
