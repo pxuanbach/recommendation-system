@@ -1,30 +1,33 @@
 import React from "react";
-import "./cardMovies.css"
-import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import "./cardMovies.css";
+import { Box, Rating } from "@mui/material";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
-const CardMovies = () => {
-    const [value, setValue] = React.useState(5);
-    return (
-        <Link to={"/movies/1"} className="container-card-movies">
-            <div className="image-card-movies">
-            </div>
-            <div className="detail-card-movies">
-                <div className="name-card-movies">Mèo Đi Hia: Điều ước cuối cùng</div>
-                <div className="time-card-movies">Dec 21, 2022</div>
-                <Box
-                sx={{
-                    '& > legend': { mt: 2 },
-                }}
-                >
-                    <Rating name="read-only" value={value} readOnly />
-                </Box>
-            </div>
-            
-        </Link>
-    )
+const CardMovies = ({ showType, movie }) => {
+  return (
+    <Link to={`/movies/${movie.movieId}`} className="container-card-movies">
+      <img src={movie.poster_path} className="poster-card-movies" />
+      <div className="detail-card-movies">
+        <div className="name-card-movies">{movie.title}</div>
+        <div className="time-card-movies">
+          {dayjs(movie.release_date).format("DD/MM/YYYY")}
+        </div>
+        {showType === "have" ? <Box
+          sx={{
+            "& > legend": { mt: 2 },
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            marginBottom: 1
+          }}
+        >
+          <Rating name="read-only" value={movie.rating} readOnly />
+          {movie.rating}
+        </Box> : <></>}
+      </div>
+    </Link>
+  );
 };
 
 export default CardMovies;

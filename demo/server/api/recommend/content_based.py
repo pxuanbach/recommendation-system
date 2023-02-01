@@ -12,10 +12,30 @@ router = APIRouter(prefix="/content-based")
 
 
 @router.get(
-    "/{user_id}",
+    "",
     response_model=List[Recommend]
 )
 def content_based_recommend(
+    title: str,
+    num_items: int = 10,
+):
+    result = content_based_recommender.get_recommendations_for_title(title, num_items)
+    recommend_arr= []
+    for index, row in result.iterrows():
+        rec = dict(**row)
+        movie_data = fetch_movie_data(rec["movieId"])
+        rec.update(**movie_data)
+        recommend_arr.append(rec)
+
+    return recommend_arr
+
+
+
+@router.get(
+    "/{user_id}",
+    response_model=List[Recommend]
+)
+def content_based_recommend_by_user_id(
     user_id: int,
     num_items: int = 10,
 ):

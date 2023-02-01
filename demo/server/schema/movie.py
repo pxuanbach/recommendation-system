@@ -13,9 +13,16 @@ class Movie(BaseModel):
     original_title: Optional[str]
     release_date: Optional[str]
     status: Optional[str]
+    language: Optional[str]
+    budget: Optional[int]
+    revenue: Optional[int]
+    tmdb_id: Optional[int]
     runtime: Optional[int]
     vote_average: Optional[float]
     vote_count: Optional[int]
+    cast: Optional[List[dict]] = []
+    crew: Optional[List[dict]] = []
+    keywords: Optional[List[dict]] = []
 
     @validator("genreList", always=True)
     def generate_genre_list(cls, v, values, **kwargs):

@@ -9,6 +9,7 @@
 }
 .card-recommend > img{
     width: 100%;
+    max-height: 200px;
     border-radius: 8px 8px 0 0;
 }
 .div-detail-recommend{
@@ -17,7 +18,8 @@
 .name-movie-recommend{
     font-weight: bold;
     font-size: 15px;
-    width: 100px;
+    width: 100%;
+    white-space: pre-wrap;
 }
 .date-movie-recommend{
     font-size: 14px;

@@ -7,13 +7,13 @@ import CardCast from "../../components/cardCast";
 import CardRecommend from "../../components/cardRecommend";
 import { useParams, useLocation } from "react-router-dom";
 import axiosInstance from "../../services/httpService";
-import { getMovieByIdEndPoint } from "../../services/endpointService";
-import { processingRuntime } from "../../services/movieService";
+import { getMovieByIdEndPoint, getContentBasedRecommendEndPoint } from "../../services/endpointService";
 
 const Detail = () => {
   const [value, setValue] = useState(5);
   const [isLoading, setIsloading] = useState(true);
   const [movie, setMovie] = useState();
+  const [moviesRec, setMoviesRec] = useState([]);
   const { movieId } = useParams();
 
   const getMovieDetail = async () => {
@@ -26,7 +26,23 @@ const Detail = () => {
       const data = res.data;
       // console.log(data);
       setMovie(data);
-      setIsloading(false)
+      setIsloading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getMoviesRecommendations = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getContentBasedRecommendEndPoint({
+          title: movie.title,
+        })
+      );
+      const data = res.data;
+      // console.log(data);
+      setMoviesRec(data);
+      setIsloading(false);
     } catch (err) {
       console.log(err);
     }
@@ -35,6 +51,10 @@ const Detail = () => {
   useEffect(() => {
     getMovieDetail();
   }, []);
+
+  useEffect(() => {
+    getMoviesRecommendations();
+  }, [movie])
 
   return (
     <div style={{ width: "100%" }}>
@@ -50,50 +70,46 @@ const Detail = () => {
                   <div className="div-list-cast">
                     <div className="title-body">Top Billed Cast</div>
                     <div className="list-card-cast">
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
-                      <CardCast />
+                      {movie.cast &&
+                        movie.cast.map((cast) => (
+                          <CardCast key={cast.id} cast={cast} />
+                        ))}
                     </div>
-                    <div className="btn-view-full-cast">Full Cast & Crew</div>
+                    {/* <div className="btn-view-full-cast">Full Cast & Crew</div> */}
+                  </div>
+                  <div className="div-list-cast">
+                    <div className="title-body">Crew</div>
+                    <div className="list-card-cast">
+                      {movie.crew &&
+                        movie.crew.map((crew) => (
+                          <CardCast key={crew.id} cast={crew} isCast={false} />
+                        ))}
+                    </div>
                   </div>
                   <div className="div-list-cast">
                     <div className="title-body">Movie Content</div>
-                    <p style={{ paddingTop: 10 }}>
-                      Puss phát hiện ra rằng niềm đam mê phiêu lưu mạo hiểm của
-                      anh đã gây ra hậu quả: Anh đã đốt cháy 8 trong số 9 mạng
-                      sống của mình, bây giờ chỉ còn lại đúng một mạng. Anh ta
-                      bắt đầu một cuộc hành trình để tìm Điều ước cuối cùng thần
-                      thoại trong Rừng Đen nhằm khôi phục lại chín mạng sống của
-                      mình. Chỉ còn một mạng sống, đây có lẽ sẽ là cuộc hành
-                      trình nguy hiểm nhất của Puss.
-                    </p>
+                    <p style={{ paddingTop: 10 }}>{movie.overview}</p>
                   </div>
                   <div className="div-list-cast">
                     <div className="title-body">Trailer</div>
                     <div className="div-trailer">
-                      <img
-                        src={require("../../image/trailer.jpeg")}
-                        alt="movie pic"
-                      />
+                      <img src={movie.backdrop_path} alt="movie pic" />
                     </div>
                   </div>
-                  <div className="div-list-cast">
+                  {/* <div className="div-list-cast">
                     <div className="title-body">Comment</div>
-                  </div>
+                  </div> */}
                   <div className="div-list-cast">
                     <div className="title-body">Recommendations</div>
                     <div className="list-card-cast">
+                      {moviesRec && moviesRec.map((rec) => (
+                        <CardRecommend key={rec.movieId} movie={rec}/>
+                      ))}
+                      {/* <CardRecommend />
                       <CardRecommend />
                       <CardRecommend />
                       <CardRecommend />
-                      <CardRecommend />
-                      <CardRecommend />
+                      <CardRecommend /> */}
                     </div>
                   </div>
                 </div>
@@ -109,27 +125,39 @@ const Detail = () => {
                   </div>
                   <div className="div-spec-detail-movie">
                     <div className="title-spec">Original Title</div>
-                    <div className="content-spec">
-                      Puss in Boots: The Last Wish
-                    </div>
+                    <div className="content-spec">{movie.original_title}</div>
                     <div className="title-spec">Status</div>
-                    <div className="content-spec">Released</div>
+                    <div className="content-spec">{movie.status}</div>
                     <div className="title-spec">Original Language</div>
-                    <div className="content-spec">Tiếng Anh</div>
+                    <div className="content-spec">{movie.language}</div>
                     <div className="title-spec">Budget</div>
-                    <div className="content-spec">$90,000,000.00</div>
+                    <div className="content-spec">
+                      {movie.budget
+                        ? `$${new Intl.NumberFormat().format(movie.budget)}`
+                        : "-"}
+                    </div>
                     <div className="title-spec">Revenue</div>
-                    <div className="content-spec">$254,000,000.00</div>
+                    <div className="content-spec">
+                      {movie.revenue
+                        ? `$${new Intl.NumberFormat().format(movie.revenue)}`
+                        : "-"}
+                    </div>
                     <div className="title-spec">Keywords</div>
                     <div className="div-keyword">
-                      <div className="keyword">fairy tale</div>
+                      {movie.keywords &&
+                        movie.keywords.map((keyword) => (
+                          <div key={keyword.id} className="keyword">
+                            {keyword.name}
+                          </div>
+                        ))}
+                      {/* <div className="keyword">fairy tale</div>
                       <div className="keyword">talking dog</div>
                       <div className="keyword">spin off</div>
                       <div className="keyword">aftercreditsstinger</div>
                       <div className="keyword">talking cat</div>
-                      <div className="keyword">fear of death</div>
+                      <div className="keyword">fear of death</div> */}
                     </div>
-                    <div className="title-spec">Content Score</div>
+                    {/* <div className="title-spec">Content Score</div>
                     <Box
                       sx={{
                         "& > legend": { mt: 2 },
@@ -139,7 +167,7 @@ const Detail = () => {
                       }}
                     >
                       <Rating name="read-only" value={value} readOnly />
-                    </Box>
+                    </Box> */}
                   </div>
                 </div>
               </div>

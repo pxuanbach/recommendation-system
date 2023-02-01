@@ -54,6 +54,29 @@ class ContentBasedRecommendation:
     def fit(self):
         self.refresh()
 
+    def get_recommendations_for_title(self, title, num_items=5) -> pd.DataFrame:
+        titles = self.movies['title']
+        indices = pd.Series(self.movies.index, index=self.movies['title']).drop_duplicates()
+        idx = indices[title]
+        # sim_scores = list(enumerate(self.cosine_sim[idx]))
+        sim = self.cosine_sim[idx]
+        sim_scores = dict()
+        for i, s in enumerate(sim):
+            if isinstance(s, np.float64):
+                # prevent recommending the same movie
+                if self.movies['title'].iloc[i] == title:
+                    continue
+                if s > sim_scores.get(i, 0):
+                    sim_scores[i] = s
+        sim_scores = list(sorted(sim_scores.items(), key=lambda item: item[1], reverse=True))[:num_items]
+        movie_indices = [i[0] for i in sim_scores]
+        movie_similarity = [i[1] for i in sim_scores]
+        # print(sim_scores, titles.iloc[movie_indices])
+        return pd.DataFrame(zip(self.movies['movieId'].iloc[movie_indices], 
+            self.movies['title'].iloc[movie_indices], 
+            self.movies['genres'].iloc[movie_indices], movie_similarity),
+            columns=["movieId", "title", "genres", "score"])
+
     def get_recommendations(self, titles, num_items=5) -> pd.DataFrame:
         """in this function we find similarity score for specific movie sorted
         and gets all metadata for it"""

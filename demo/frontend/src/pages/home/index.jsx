@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./index.css";
 import Card from "../../components/card.jsx";
 import GenreCard from "../../components/genreCard";
@@ -8,9 +8,10 @@ import Stack from '@mui/material/Stack';
 import axiosInstance from "../../services/httpService";
 import {
   getRatedGenresOfUserEndPoint,
-  getContentBasedRecommendEndPoint,
-  getModelBasedRecommendEndPoint,
+  getContentBasedUserIdRecommendEndPoint,
+  getModelBasedUserRecommendEndPoint,
 } from "../../services/endpointService";
+import { UserContext } from "../../UserContext";
 
 const marks = [
   {
@@ -37,13 +38,53 @@ const marks = [
     value: 10,
     label: "10",
   },
+  {
+    value: 11,
+    label: "11",
+  },
+  {
+    value: 12,
+    label: "12",
+  },
+  {
+    value: 13,
+    label: "13",
+  },
+  {
+    value: 14,
+    label: "14",
+  },
+  {
+    value: 15,
+    label: "15",
+  },
+  {
+    value: 16,
+    label: "16",
+  },
+  {
+    value: 17,
+    label: "17",
+  },
+  {
+    value: 18,
+    label: "18",
+  },
+  {
+    value: 19,
+    label: "19",
+  },
+  {
+    value: 20,
+    label: "20",
+  },
 ];
 function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
-  const userId = 318
-  const [numItems, setNumItems] = useState(7);
+  const {user } = useContext(UserContext)
+  const [numItems, setNumItems] = useState(10);
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
   const [modelBasedRec, setModelBasedRec] = useState([]);
@@ -52,7 +93,7 @@ const Home = () => {
     try {
       const res = await axiosInstance.get(
         getRatedGenresOfUserEndPoint({
-          userId: userId,
+          userId: user.userId,
         })
       );
       let data = res.data.data;
@@ -66,8 +107,8 @@ const Home = () => {
   const getContentBasedRecommend = async () => {
     try {
       const res = await axiosInstance.get(
-        getContentBasedRecommendEndPoint({
-          userId: userId,
+        getContentBasedUserIdRecommendEndPoint({
+          userId: user.userId,
           numItems: numItems,
         })
       );
@@ -82,8 +123,8 @@ const Home = () => {
   const getModelBasedRecommend = async () => {
     try {
       const res = await axiosInstance.get(
-        getModelBasedRecommendEndPoint({
-          userId: userId,
+        getModelBasedUserRecommendEndPoint({
+          userId: user.userId,
           numItems: numItems,
         })
       );
@@ -137,8 +178,9 @@ const Home = () => {
         </div>
         <div className="div-score">
           <div className="title-body">Recommended movie number</div>
-          <Box sx={{width: 800, marginLeft: 2, marginTop: 2 }}>
+          <Box fullWidth sx={{marginX: 2, marginTop: 2 }}>
             <Slider
+              
               value={numItems}
               onChangeCommitted={(_, v) => setNumItems(v)}
               aria-label="Custom marks"
@@ -148,7 +190,7 @@ const Home = () => {
               // valueLabelDisplay="auto"
               marks={marks}
               min={5}
-              max={10}
+              max={20}
             />
           </Box>
         </div>
