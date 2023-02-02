@@ -27,17 +27,9 @@ let moviesMetaDataPromise = new Promise((resolve) =>
     .on("end", () => resolve(MOVIES_META_DATA))
 );
 
-let moviesKeywordsPromise = new Promise((resolve) =>
-  fs
-    .createReadStream("./src/data/keywords.csv")
-    .pipe(csv({ headers: true }))
-    .on("data", fromKeywordsFile)
-    .on("end", () => resolve(MOVIES_KEYWORDS))
-);
-
 let ratingsPromise = new Promise((resolve) =>
   fs
-    .createReadStream("./src/data/ratings_small.csv")
+    .createReadStream("./src/data/ratings.csv")
     .pipe(csv({ headers: true }))
     .on("data", fromRatingsFile)
     .on("end", () => resolve(RATINGS))
@@ -54,12 +46,7 @@ function fromMetaDataFile(row) {
   MOVIES_META_DATA[row.movieId] = {
     movieId: row.movieId,
     title: row.title,
-  };
-}
-
-function fromKeywordsFile(row) {
-  MOVIES_KEYWORDS[row.id] = {
-    keywords: softEval(row.keywords, []),
+    genres: row.genres,
   };
 }
 
@@ -71,7 +58,7 @@ function fromLinksFile(row) {
   LINKS.push(row);
 }
 
-function transformData([moviesMetaData, moviesKeywords, ratings]) {
+function transformData([moviesMetaData, ratings]) {
   const { MOVIES_BY_ID, MOVIES_IN_LIST } = prepareMovies(moviesMetaData);
   return { MOVIES_BY_ID, MOVIES_IN_LIST, ratings };
 }
@@ -105,7 +92,6 @@ app.use("/api/v1/predict-item-based/:userId", async function (req, res) {
   const { count } = req.query;
   var { MOVIES_BY_ID, MOVIES_IN_LIST, ratings } = await Promise.all([
     moviesMetaDataPromise,
-    moviesKeywordsPromise,
     ratingsPromise,
     linksPromise,
   ]).then(transformData);
@@ -126,7 +112,7 @@ app.use("/api/v1/predict-item-based/:userId", async function (req, res) {
     count || 10
   );
 
-  Promise.all(getFilmDetail(dataFilter)).then((data) => {
+  Promise.all(getFilmDetail(dataFilter, LINKS)).then((data) => {
     res.send(data);
   });
 });
@@ -136,7 +122,6 @@ app.use("/api/v1/predict-user-based/:userId", async function (req, res) {
   const { count } = req.query;
   var { MOVIES_BY_ID, MOVIES_IN_LIST, ratings } = await Promise.all([
     moviesMetaDataPromise,
-    moviesKeywordsPromise,
     ratingsPromise,
     linksPromise,
   ]).then(transformData);

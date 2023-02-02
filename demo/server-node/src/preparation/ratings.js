@@ -1,6 +1,4 @@
 function prepareRatings(ratings) {
-  console.log("Preparing Ratings ... \n");
-
   const ratingCountsByMovie = getRatingCountsByMovie(ratings);
   const ratingCountsByUser = getRatingCountsByUser(ratings);
 
@@ -9,7 +7,6 @@ function prepareRatings(ratings) {
     userRatings: 5, // be careful not to exclude your focused user
   };
 
-  console.log("1 Group ratings by user");
   const ratingsGroupedByUser = getRatingsGroupedByUser(
     ratings,
     ratingCountsByMovie,
@@ -17,7 +14,6 @@ function prepareRatings(ratings) {
     POPULARITY_TRESHOLD
   );
 
-  console.log("2 Group ratings by movie \n");
   const ratingsGroupedByMovie = getRatingsGroupedByMovie(
     ratings,
     ratingCountsByMovie,
