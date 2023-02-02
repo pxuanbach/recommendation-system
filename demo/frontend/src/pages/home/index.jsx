@@ -169,8 +169,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getGenreWatched();
-  }, []);
+    if (user) {
+      getGenreWatched();
+      getContentBasedRecommend();
+      getModelBasedRecommend();
+      getUserBasedRecommend();
+      getItemBasedRecommend();
+    }
+  }, [user]);
 
   useEffect(() => {
     getContentBasedRecommend();

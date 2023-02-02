@@ -57,7 +57,7 @@ class ModelBasedRecommendation:
             .withColumn("rec_exp", explode("recommendations"))\
             .select('userId', col("rec_exp.movieId"), col("rec_exp.rating"))
         result = nrecommendations.join(movies, on='movieId').filter(f'userId = {user_id}')
-        return result.collect()
+        return result.repartition(1).collect()
     
     def get_recommendation_movie(
         self, movie_id: int, num_items: int

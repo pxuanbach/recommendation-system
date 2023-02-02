@@ -83,3 +83,16 @@ def fetch_movie_keywords(movie_id) -> dict:
     return {
         "keywords": [],
     }
+
+
+def fetch_genres() -> dict:
+    url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={settings.THEMOVIEDB_API_KEY}&language=en-US"
+    data = requests.get(url)
+    data = data.json()
+    if "success" not in data:
+        return {
+            "genres": data["genres"],
+        }
+    return {
+        "genres": [],
+    }
