@@ -10,6 +10,8 @@ import {
   getRatedGenresOfUserEndPoint,
   getContentBasedUserIdRecommendEndPoint,
   getModelBasedUserRecommendEndPoint,
+  getUserBasedEndPoint,
+  getItemBasedEndPoint,
 } from "../../services/endpointService";
 import { UserContext } from "../../UserContext";
 
@@ -88,6 +90,8 @@ const Home = () => {
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
   const [modelBasedRec, setModelBasedRec] = useState([]);
+  const [userBasedRec, setUserBasedRec] = useState([]);
+  const [itemBasedRec, setItemBasedRec] = useState([]);
 
   const getGenreWatched = async () => {
     try {
@@ -135,18 +139,50 @@ const Home = () => {
       console.log(err);
     }
   };
+  const getUserBasedRecommend = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getUserBasedEndPoint({
+          userId: user?.userId ? user.userId : 1,
+          numItems: numItems,
+        })
+      );
+      const data = res.data;
+      setUserBasedRec(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getItemBasedRecommend = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getItemBasedEndPoint({
+          userId: user?.userId ? user.userId : 1,
+          numItems: numItems,
+        })
+      );
+      const data = res.data;
+      setItemBasedRec(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (user) {
       getGenreWatched();
       getContentBasedRecommend();
       getModelBasedRecommend();
+      getUserBasedRecommend();
+      getItemBasedRecommend();
     }
   }, [user]);
 
   useEffect(() => {
     getContentBasedRecommend();
     getModelBasedRecommend();
+    getUserBasedRecommend();
+    getItemBasedRecommend();
   }, [numItems]);
 
   return (
@@ -219,6 +255,24 @@ const Home = () => {
           <div className="div-item">
             {modelBasedRec &&
               modelBasedRec.map((rec) => (
+                <Card key={rec.movieId} recommend={rec} />
+              ))}
+          </div>
+        </div>
+        <div className="popular-film">
+          <div className="title-body">User-Based Collaborative Filtering</div>
+          <div className="div-item">
+            {userBasedRec &&
+              userBasedRec.map((rec) => (
+                <Card key={rec.movieId} recommend={rec} />
+              ))}
+          </div>
+        </div>
+        <div className="popular-film">
+          <div className="title-body">Item-Based Collaborative Filtering</div>
+          <div className="div-item">
+            {itemBasedRec &&
+              itemBasedRec.map((rec) => (
                 <Card key={rec.movieId} recommend={rec} />
               ))}
           </div>
