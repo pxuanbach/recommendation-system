@@ -17,6 +17,10 @@ def fetch_movie_data(movie_id) -> dict:
     data = data.json()
     if "success" not in data:
         try:
+            language_name = ""
+            for lan_obj in data["spoken_languages"]:
+                if lan_obj["iso_639_1"] == data["original_language"]:
+                    language_name = lan_obj["english_name"]
             return {
                 "overview": data['overview'],
                 "poster_path": "https://image.tmdb.org/t/p/w500/" + data['poster_path'],
@@ -27,6 +31,10 @@ def fetch_movie_data(movie_id) -> dict:
                 "status": data["status"],
                 "vote_average": data["vote_average"],
                 "vote_count": data["vote_count"],
+                "budget": data["budget"],
+                "tmdb_id": data["id"],
+                "language": language_name,
+                "revenue": data["revenue"],
             }
         except Exception as e:
             logger.critical(f"Fetch data movieId {movie_id} error - {str(e)}")
@@ -40,4 +48,38 @@ def fetch_movie_data(movie_id) -> dict:
         "status": "",
         "vote_average": 0,
         "vote_count": 0,
+        "budget": 0,
+        "revenue": 0,
+        "tmdb_id": 0,
+        "original_language": "en"
+    }
+
+
+def fetch_movie_credits(movie_id) -> dict:
+    tmdb_id = convert_movielen_id_to_tmdb_id(movie_id)
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/credits?api_key={settings.THEMOVIEDB_API_KEY}&language=en-US"
+    data = requests.get(url)
+    data = data.json()
+    if "success" not in data:
+        return {
+            "cast": data["cast"],
+            "crew": data["crew"],
+        }
+    return {
+        "cast": [],
+        "crew": [],
+    }
+
+
+def fetch_movie_keywords(movie_id) -> dict:
+    tmdb_id = convert_movielen_id_to_tmdb_id(movie_id)
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/keywords?api_key={settings.THEMOVIEDB_API_KEY}&language=en-US"
+    data = requests.get(url)
+    data = data.json()
+    if "success" not in data:
+        return {
+            "keywords": data["keywords"],
+        }
+    return {
+        "keywords": [],
     }

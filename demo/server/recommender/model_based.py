@@ -48,7 +48,7 @@ class ModelBasedRecommendation:
     def save_model(self, path="./static/trained"):
         self.model.save(path=path)
 
-    def get_recommendation(
+    def get_recommendation_user(
         self, user_id: int, num_items: int
     ) -> List[Row]:
         nrecommendations = self.model.recommendForAllUsers(num_items)
@@ -57,6 +57,17 @@ class ModelBasedRecommendation:
             .withColumn("rec_exp", explode("recommendations"))\
             .select('userId', col("rec_exp.movieId"), col("rec_exp.rating"))
         result = nrecommendations.join(movies, on='movieId').filter(f'userId = {user_id}')
+        return result.collect()
+    
+    def get_recommendation_movie(
+        self, movie_id: int, num_items: int
+    ) -> List[Row]:
+        nrecommendations = self.model.recommendForAllItems(num_items)
+
+        nrecommendations = nrecommendations\
+            .withColumn("rec_exp", explode("recommendations"))\
+            .select('userId', col("rec_exp.movieId"), col("rec_exp.rating"))
+        result = nrecommendations.join(movies, on='movieId').filter(f'movieId = {movie_id}')
         return result.collect()
 
     def get_recommendation_subset(
