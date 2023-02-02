@@ -1,11 +1,10 @@
 import React from "react";
 import "./cardRecommend.css";
 import dayjs from "dayjs";
-import { Link, Navigate } from "react-router-dom";
 
 const CardRecommend = ({ movie }) => {
   return (
-    <Navigate to={`/movies/${movie.movieId}`} className="container-card-recommend">
+    <div className="container-card-recommend">
       <div className="card-recommend">
         <img src={movie.backdrop_path} alt="movie pic" />
       </div>
@@ -15,7 +14,7 @@ const CardRecommend = ({ movie }) => {
           {dayjs(movie.release_date).format("DD/MM/YYYY")}
         </div>
       </div>
-    </Navigate>
+    </div>
   );
 };
 

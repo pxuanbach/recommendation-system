@@ -4,7 +4,7 @@ import Card from "../../components/card.jsx";
 import GenreCard from "../../components/genreCard";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import axiosInstance from "../../services/httpService";
 import {
   getRatedGenresOfUserEndPoint,
@@ -83,7 +83,7 @@ function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
-  const {user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const [numItems, setNumItems] = useState(10);
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
@@ -97,7 +97,7 @@ const Home = () => {
         })
       );
       let data = res.data.data;
-      const sortedData = data.sort((a, b) => b.count - a.count)
+      const sortedData = data.sort((a, b) => b.count - a.count);
       setGenreWatched(sortedData);
     } catch (err) {
       console.log(err);
@@ -137,10 +137,12 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getGenreWatched();
-    getContentBasedRecommend();
-    getModelBasedRecommend();
-  }, [])
+    if (user) {
+      getGenreWatched();
+      getContentBasedRecommend();
+      getModelBasedRecommend();
+    }
+  }, [user]);
 
   useEffect(() => {
     getContentBasedRecommend();
@@ -167,22 +169,24 @@ const Home = () => {
         </div>
         <div className="div-score">
           <div className="title-body">Movie genre watched</div>
-          <div style={{
-            display: 'flex',
-            width: '100%', 
-            flexWrap: 'wrap',
-            gap: '0px 12px'
-          }}>
-            {genreWatched && genreWatched.map((genre, index) => (
-              <GenreCard key={index} genre={genre}/>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              flexWrap: "wrap",
+              gap: "0px 12px",
+            }}
+          >
+            {genreWatched &&
+              genreWatched.map((genre, index) => (
+                <GenreCard key={index} genre={genre} />
+              ))}
           </div>
         </div>
         <div className="div-score">
           <div className="title-body">Recommended movie number</div>
-          <Box fullWidth sx={{marginX: 2, marginTop: 2 }}>
+          <Box fullWidth sx={{ marginX: 2, marginTop: 2 }}>
             <Slider
-              
               value={numItems}
               onChangeCommitted={(_, v) => setNumItems(v)}
               aria-label="Custom marks"

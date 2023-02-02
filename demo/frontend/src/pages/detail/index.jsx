@@ -5,9 +5,12 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import CardCast from "../../components/cardCast";
 import CardRecommend from "../../components/cardRecommend";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import axiosInstance from "../../services/httpService";
-import { getMovieByIdEndPoint, getContentBasedRecommendEndPoint } from "../../services/endpointService";
+import {
+  getMovieByIdEndPoint,
+  getContentBasedRecommendEndPoint,
+} from "../../services/endpointService";
 
 const Detail = () => {
   const [value, setValue] = useState(5);
@@ -26,17 +29,18 @@ const Detail = () => {
       const data = res.data;
       // console.log(data);
       setMovie(data);
+      await getMoviesRecommendations(data.title);
       setIsloading(false);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getMoviesRecommendations = async () => {
+  const getMoviesRecommendations = async (title) => {
     try {
       const res = await axiosInstance.get(
         getContentBasedRecommendEndPoint({
-          title: movie.title,
+          title: title,
         })
       );
       const data = res.data;
@@ -52,9 +56,11 @@ const Detail = () => {
     getMovieDetail();
   }, []);
 
-  useEffect(() => {
-    getMoviesRecommendations();
-  }, [movie])
+  // useEffect(() => {
+  //   if (movie) {
+  //     getMoviesRecommendations();
+  //   }
+  // }, [movie])
 
   return (
     <div style={{ width: "100%" }}>
@@ -71,8 +77,8 @@ const Detail = () => {
                     <div className="title-body">Top Billed Cast</div>
                     <div className="list-card-cast">
                       {movie.cast &&
-                        movie.cast.map((cast) => (
-                          <CardCast key={cast.id} cast={cast} />
+                        movie.cast.map((cast, index) => (
+                          <CardCast key={index} cast={cast} />
                         ))}
                     </div>
                     {/* <div className="btn-view-full-cast">Full Cast & Crew</div> */}
@@ -81,8 +87,8 @@ const Detail = () => {
                     <div className="title-body">Crew</div>
                     <div className="list-card-cast">
                       {movie.crew &&
-                        movie.crew.map((crew) => (
-                          <CardCast key={crew.id} cast={crew} isCast={false} />
+                        movie.crew.map((crew, index) => (
+                          <CardCast key={index} cast={crew} isCast={false} />
                         ))}
                     </div>
                   </div>
@@ -102,9 +108,12 @@ const Detail = () => {
                   <div className="div-list-cast">
                     <div className="title-body">Recommendations</div>
                     <div className="list-card-cast">
-                      {moviesRec && moviesRec.map((rec) => (
-                        <CardRecommend key={rec.movieId} movie={rec}/>
-                      ))}
+                      {moviesRec &&
+                        moviesRec.map((rec) => (
+                          <a key={rec.movieId} href={`/movies/${rec.movieId}`}>
+                            <CardRecommend movie={rec} />
+                          </a>
+                        ))}
                       {/* <CardRecommend />
                       <CardRecommend />
                       <CardRecommend />
