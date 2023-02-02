@@ -6,13 +6,14 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
 import Checkbox from "@mui/material/Checkbox";
+import { Chip } from "@mui/material";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import TextDate from "./filter-date.jsx";
 import "./filter.css";
 
-export default function Filter({ user, handleChangeShowType }) {
+export default function Filter({ user, handleChangeShowType, genres, selected, handleSelectionChanged }) {
   return (
     <div>
       <FormControl>
@@ -53,17 +54,29 @@ export default function Filter({ user, handleChangeShowType }) {
         <FormControlLabel control={<Checkbox />} label="Ads" />
       </FormGroup>
       </div> */}
-      <div style={{ paddingTop: 20 }}>
+      {/* <div style={{ paddingTop: 20 }}>
         <FormLabel id="demo-radio-buttons-group-label">Release Dates</FormLabel>
         <div style={{ paddingTop: 20, lineHeight: 5 }}>
           <TextDate />
         </div>
-      </div>
+      </div> */}
       <div style={{ paddingTop: 20 }}>
         <FormLabel id="demo-radio-buttons-group-label">Genres</FormLabel>
         <div className="div-genre">
-          <div className="btn-genre">Chương trình Truyền Hình</div>
-          <div className="btn-genre">Phim Bí Ẩn</div>
+          {genres && genres.map((genre) => (
+            <Chip key={genre.id}
+            onClick={() => handleSelectionChanged(genre.name)}
+            sx={{
+              cursor: 'pointer',
+              fontSize: 16,
+              paddingY: 2
+            }}
+            variant={selected.has(genre.name) ? "filled" : "outlined"}
+            color={selected.has(genre.name) ? "primary" : "default"}
+            label={genre.name}></Chip>
+          ))}
+          
+          {/* <div className="btn-genre">Phim Bí Ẩn</div>
           <div className="btn-genre">Phim Chiến Tranh</div>
           <div className="btn-genre">Phim Chính Kịch</div>
           <div className="btn-genre">Phim Gia Đình</div>
@@ -74,7 +87,7 @@ export default function Filter({ user, handleChangeShowType }) {
           <div className="btn-genre">Phim Hành Động</div>
           <div className="btn-genre">Phim Hình Sự</div>
           <div className="btn-genre">Phim Khoa Học Viễn Tưởng</div>
-          <div className="btn-genre">Phim Kinh Dị</div>
+          <div className="btn-genre">Phim Kinh Dị</div> */}
         </div>
       </div>
       {/* <div style={{paddingTop: 20}}>
