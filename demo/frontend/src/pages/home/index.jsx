@@ -205,9 +205,8 @@ const Home = () => {
           </div>
         </div>
 
-        {/* <div className="banner">
-
-      </div> */}
+        <div className="banner"></div>
+        
         <div className="popular-film">
           <div className="title-body">Model Based</div>
           <div className="div-item">
