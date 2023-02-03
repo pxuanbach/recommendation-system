@@ -1,6 +1,6 @@
 import pandas as pd
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, explode
+from pyspark.sql.functions import col, explode, split
 
 
 spark = SparkSession.builder.appName('Recommendations Demo').getOrCreate()
@@ -20,7 +20,8 @@ users = spark.read.csv(f"{data_path}users.csv", sep='\t', header=True)\
 movies = spark.read.csv(f"{data_path}movies.csv", header=True)\
     .withColumn('movieId', col('movieId').cast('integer'))\
     .withColumn('title', col('title').cast('string'))\
-    .withColumn('genres', col('genres').cast('string'))
+    .withColumn('genres', col('genres').cast('string'))\
+    .withColumn('genreArray', split("genres", "[|]"))
 
 ratings = spark.read.csv(f"{data_path}ratings.csv", header=True)\
     .withColumn('userId', col('userId').cast('integer'))\

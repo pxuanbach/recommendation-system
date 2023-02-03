@@ -4,13 +4,15 @@ import Sort from "../../components/sort.jsx";
 import Filter from "../../components/filter.jsx";
 import CardMovies from "../../components/cardMovies";
 import axiosInstance from "../../services/httpService";
-import { getMoviesEndPoint } from "../../services/endpointService";
+import { getMoviesEndPoint, getGenresEndPoint } from "../../services/endpointService";
 import { UserContext } from "../../UserContext";
 
 const Movies = () => {
   const { user } = useContext(UserContext);
   const [isLoadMore, setIsLoadMore] = useState(false);
   const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [genresSelected, setGenresSelected] = useState(new Set());
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(18);
   const [showType, setShowType] = useState("all");
@@ -22,6 +24,17 @@ const Movies = () => {
     setShowType(value);
   };
 
+  const handleSelectionChanged = (name) => {
+    // treat state as immutable
+    // React only does a shallow comparison so we need a new Set
+    const newSet = new Set(genresSelected);
+    if (newSet.has(name)) newSet.delete(name);
+    else newSet.add(name);
+    setIsLoadMore(false);
+    setMovies([]);
+    setGenresSelected(newSet);
+  }
+
   const getMovies = async () => {
     try {
       const res = await axiosInstance.get(
@@ -30,10 +43,11 @@ const Movies = () => {
           limit: limit,
           showType: showType,
           userId: user?.userId,
+          genres: genresSelected
         })
       );
       const data = res.data;
-      if (data.page === data.total_page) {
+      if (data.page >= data.total_page) {
         setIsLoadMore(false);
       } else {
         setIsLoadMore(true);
@@ -45,14 +59,30 @@ const Movies = () => {
     }
   };
 
+  const getGenres = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getGenresEndPoint()
+      );
+      const data = res.data.genres;
+      setGenres(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleLoadMore = (e) => {
     e.preventDefault();
     setSkip(skip + limit);
   };
 
   useEffect(() => {
+    getGenres();
+  }, []);
+
+  useEffect(() => {
     getMovies();
-  }, [skip, showType]);
+  }, [skip, showType, genresSelected])
 
   return (
     <div className="container">
@@ -70,6 +100,9 @@ const Movies = () => {
                 <Filter
                   user={user}
                   handleChangeShowType={handleChangeShowType}
+                  genres={genres}
+                  handleSelectionChanged={handleSelectionChanged}
+                  selected={genresSelected}
                 />
               </div>
             </div>

@@ -4,12 +4,14 @@ import Card from "../../components/card.jsx";
 import GenreCard from "../../components/genreCard";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import axiosInstance from "../../services/httpService";
 import {
   getRatedGenresOfUserEndPoint,
   getContentBasedUserIdRecommendEndPoint,
   getModelBasedUserRecommendEndPoint,
+  getUserBasedEndPoint,
+  getItemBasedEndPoint,
 } from "../../services/endpointService";
 import { UserContext } from "../../UserContext";
 
@@ -83,11 +85,13 @@ function valuetext(value) {
   return `${value}`;
 }
 const Home = () => {
-  const {user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
   const [numItems, setNumItems] = useState(10);
   const [genreWatched, setGenreWatched] = useState([]);
   const [contentBasedRec, setContentBasedRec] = useState([]);
   const [modelBasedRec, setModelBasedRec] = useState([]);
+  const [userBasedRec, setUserBasedRec] = useState([]);
+  const [itemBasedRec, setItemBasedRec] = useState([]);
 
   const getGenreWatched = async () => {
     try {
@@ -97,7 +101,7 @@ const Home = () => {
         })
       );
       let data = res.data.data;
-      const sortedData = data.sort((a, b) => b.count - a.count)
+      const sortedData = data.sort((a, b) => b.count - a.count);
       setGenreWatched(sortedData);
     } catch (err) {
       console.log(err);
@@ -135,14 +139,50 @@ const Home = () => {
       console.log(err);
     }
   };
+  const getUserBasedRecommend = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getUserBasedEndPoint({
+          userId: user?.userId ? user.userId : 1,
+          numItems: numItems,
+        })
+      );
+      const data = res.data;
+      setUserBasedRec(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getItemBasedRecommend = async () => {
+    try {
+      const res = await axiosInstance.get(
+        getItemBasedEndPoint({
+          userId: user?.userId ? user.userId : 1,
+          numItems: numItems,
+        })
+      );
+      const data = res.data;
+      setItemBasedRec(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    getGenreWatched();
-  }, [])
+    if (user) {
+      getGenreWatched();
+      getContentBasedRecommend();
+      getModelBasedRecommend();
+      getUserBasedRecommend();
+      getItemBasedRecommend();
+    }
+  }, [user]);
 
   useEffect(() => {
     getContentBasedRecommend();
     getModelBasedRecommend();
+    getUserBasedRecommend();
+    getItemBasedRecommend();
   }, [numItems]);
 
   return (
@@ -165,22 +205,24 @@ const Home = () => {
         </div>
         <div className="div-score">
           <div className="title-body">Movie genre watched</div>
-          <div style={{
-            display: 'flex',
-            width: '100%', 
-            flexWrap: 'wrap',
-            gap: '0px 12px'
-          }}>
-            {genreWatched && genreWatched.map((genre, index) => (
-              <GenreCard key={index} genre={genre}/>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              flexWrap: "wrap",
+              gap: "0px 12px",
+            }}
+          >
+            {genreWatched &&
+              genreWatched.map((genre, index) => (
+                <GenreCard key={index} genre={genre} />
+              ))}
           </div>
         </div>
         <div className="div-score">
           <div className="title-body">Recommended movie number</div>
-          <Box fullWidth sx={{marginX: 2, marginTop: 2 }}>
+          <Box fullWidth sx={{ marginX: 2, marginTop: 2 }}>
             <Slider
-              
               value={numItems}
               onChangeCommitted={(_, v) => setNumItems(v)}
               aria-label="Custom marks"
@@ -212,6 +254,24 @@ const Home = () => {
           <div className="div-item">
             {modelBasedRec &&
               modelBasedRec.map((rec) => (
+                <Card key={rec.movieId} recommend={rec} />
+              ))}
+          </div>
+        </div>
+        <div className="popular-film">
+          <div className="title-body">User-Based Collaborative Filtering</div>
+          <div className="div-item">
+            {userBasedRec &&
+              userBasedRec.map((rec) => (
+                <Card key={rec.movieId} recommend={rec} />
+              ))}
+          </div>
+        </div>
+        <div className="popular-film">
+          <div className="title-body">Item-Based Collaborative Filtering</div>
+          <div className="div-item">
+            {itemBasedRec &&
+              itemBasedRec.map((rec) => (
                 <Card key={rec.movieId} recommend={rec} />
               ))}
           </div>
