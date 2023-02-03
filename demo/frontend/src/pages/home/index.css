@@ -98,3 +98,14 @@
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover;
 }
+.banner2{
+    margin-top: 40px;
+    width: 100%;
+    /* height: 500px; */
+    /* background-image: url(../../image/banner.png);
+    background-repeat: no-repeat; 
+    background-size: cover; */
+}
+.banner2 > img{
+    width: 100%;
+}

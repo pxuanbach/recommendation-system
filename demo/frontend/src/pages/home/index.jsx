@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./index.css";
+import Slideshow from "../../components/slideshow";
 import Card from "../../components/card.jsx";
 import GenreCard from "../../components/genreCard";
 import Box from "@mui/material/Box";
@@ -258,6 +259,12 @@ const Home = () => {
               ))}
           </div>
         </div>
+
+        <div className="banner2">
+          <Slideshow/>
+        {/* <img src={require('../../image/banner.avif')} /> */}
+        </div>
+
         <div className="popular-film">
           <div className="title-body">User-Based Collaborative Filtering</div>
           <div className="div-item">
