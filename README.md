@@ -3,8 +3,8 @@
 ## Mục lục
 - [Chức năng](#chức-năng)
 - [Thư viện và công nghệ](#thư-viện-và-công-nghệ)
-- [Backend](#backend)
 - [Frontend](#frontend)
+- [Backend](#backend)
 - [Database/Diagram](#database-diagram)
 - [Tác giả](#tác-giả)
 - [Giảng viên hướng dẫn](#giảng-viên-hướng-dẫn)
