@@ -1,4 +1,4 @@
-# recommendation-system
+# Recommendation-System
 
 ## Mục lục
 - [Chức năng](#chức-năng)
