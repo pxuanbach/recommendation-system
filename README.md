@@ -10,11 +10,6 @@
 ## Chức năng
 - Đăng nhập
 
-  <img src="https://user-images.githubusercontent.com/71374867/172015504-4577849b-cfef-4da2-b4bc-050bfa55cea0.png" alt="..." width="1000" />
-
-- Hiển thị tổng quan về giao diện khi đăng nhập bằng tài khoản admin
-- Tab quản lý lịch trình
-
   <img src="https://user-images.githubusercontent.com/71374867/216752127-3407dd9c-fd80-40b6-88a3-01c13ad85213.png" alt="..." width="1000" />
 
 - Đăng ký
